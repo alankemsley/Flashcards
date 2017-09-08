@@ -10,12 +10,12 @@ function newCard() {
   inquirer.prompt([
     {
       name: "chooseCard",
-      message: "Press B for basic flashcards\nPress C for cloze-deleted flashcards"
+      message: "\nWelcome to the Flashcards Generator!\nPress 1 to create basic flashcards\nPress 2 to create flashcards where you can fill in the blanks"
     }
   ]).then(function(answers){
-    if (answers.chooseCard === "b") {
+    if (answers.chooseCard === "1") {
       basicCard();
-    } else if (answers.chooseCard === "c") {
+    } else if (answers.chooseCard === "2") {
       clozeCard();
     }
   });
@@ -26,22 +26,22 @@ function basicCard() {
   inquirer.prompt([
     {
       name: "front",
-      message: "Please enter text for the front of the flashcard:"
+      message: "\nYou will now create a new basic flashcard.\nPlease enter a question you would like to put on the front of the flashcard:"
     },
     {
       name: "back",
-      message: "Please enter text for the back of the flashcard:"
+      message: "\nThank you. Now enter the answer you would like to put on the back of the flashcard:"
     },
     {
       name: "choice",
-      message: "Flashcard has been created\nPress N to create a new flashcard\nPress S to start going through the card deck"
+      message: "\nYour flashcard has been created!\nPress 1 to create a new flashcard\nPress 2 to start going through the card deck"
     }
   ]).then(function(answers) {
     var basic = new BasicCard(answers.front, answers.back);
     basicCards.push(basic);
-    if (answers.choice === "n") {
+    if (answers.choice === "1") {
       basicCard();
-    } else if (answers.choice === "s") {
+    } else if (answers.choice === "2") {
       startBasic();
     }
   });
@@ -52,43 +52,34 @@ function clozeCard() {
   inquirer.prompt([
     {
       name: "text",
-      message: "Please enter full text for the flashcard:"
+      message: "\nYou will now create a new fill-in-the-blank flashcard.\nPlease enter the full text you would like on the flashcard:"
     },
     {
       name: "cloze",
-      message: "Please enter the text that goes in the blank:"
+      message: "\nThank you. Now enter the part of the above text that goes in the blank:"
+    },
+    {
+      name: "choice",
+      message: "\nYour flashcard has been created\nPress 1 to create a new flashcard\nPress 2 to start going through the card deck"
     }
-  ]).then(function(answers1) {
-    if (!answers.text.inludes(answers1.cloze)) {
-      inquirer.prompt([
-        {
-          name: "error",
-          message: "Error: Entered text must be part of the full text of the flashcard\nPress C to redo this cloze-deleted flashcard"
-        }
-      ]).then(function(answers1) {
-        clozeCard();
-      })
-    } else {
-      inquirer.prompt([
-        {
-          name: "choice",
-          message: "Flashcard has been created\nPress N to create a new flashcard\nPress S to start going through the card deck"
-        }
-      ]).then(function(answers2){
-        var cloze = new ClozeCard(answers1.text, answers1.cloze);
-        clozeCards.push(cloze);
-        if (answers2.choice === "n") {
-          clozeCard();
-        } else if (answers2.choice === "s") {
-          startCloze();
-        }
-      });
+  ]).then(function(answers){
+    var cloze = new ClozeCard(answers.text, answers.cloze);
+    clozeCards.push(cloze);
+    if (answers.choice === "1") {
+      clozeCard();
+    } else if (answers.choice === "2") {
+      startCloze();
     }
   });
 };
 
 // Start going through the basic flashcards
-
+// function startBasic() {
+//   for (i = 0, i < basicCards.length, i++) {
+//     console.log("\nQUESTION: " + basicCards[i].front);
+//
+//   }
+// };
 
 // Start going through the cloze-deleted flashcards
 
