@@ -74,15 +74,20 @@ function clozeCard() {
 };
 
 // Start going through the basic flashcards
-// function startBasic() {
-//   for (i = 0, i < basicCards.length, i++) {
-//     console.log("\nQUESTION: " + basicCards[i].front);
-//
-//   }
-// };
+function startBasic() {
+  for (i = 0; i < basicCards.length; i++) {
+    console.log("\nQUESTION: " + basicCards[i].front);
+    console.log("\nANSWER: " + basicCards[i].back);
+  }
+};
 
 // Start going through the cloze-deleted flashcards
-
+function startCloze() {
+  for (i = 0; i < clozeCards.length; i++) {
+    console.log("\nQUESTION: " + clozeCards[i].partial);
+    console.log("\nANSWER: " + clozeCards[i].cloze);
+  }
+};
 
 // Begin prompt
 newCard();
