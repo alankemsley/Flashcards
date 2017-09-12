@@ -8,12 +8,14 @@ var clozeCards = [];
 // New flashcard creation
 function newCard() {
   inquirer.prompt([{
+    type: "list",
     name: "chooseCard",
-    message: "\nWelcome to the Flashcards Generator!\nPress 1 to create basic flashcards\nPress 2 to create flashcards where you can fill in the blanks\n"
-  }]).then(function(answers) {
-    if (answers.chooseCard === "1") {
+    message: "\n***FLASHCARDS GENERATOR***\nWould you like to create BASIC FLASHCARDS or FILL-IN-THE-BLANK FLASHCARDS?\n",
+    choices: ["BASIC FLASHCARDS", "FILL-IN-THE-BLANK FLASHCARDS"]
+  }]).then(function(response) {
+    if (response.chooseCard === "BASIC FLASHCARDS") {
       basicCard();
-    } else if (answers.chooseCard === "2") {
+    } else if (response.chooseCard === "FILL-IN-THE-BLANK FLASHCARDS") {
       clozeCard();
     }
   });
@@ -23,22 +25,24 @@ function newCard() {
 function basicCard() {
   inquirer.prompt([{
       name: "front",
-      message: "\nYou will now create a new basic flashcard.\nPlease enter a question you would like to put on the front of the flashcard:\n"
+      message: "\n***NEW BASIC FLASHCARD***\nSTEP 1: Please enter a QUESTION you would like to put on the FRONT of the flashcard:\n"
     },
     {
       name: "back",
-      message: "\nThank you. Now enter the answer you would like to put on the back of the flashcard:\n"
+      message: "\nSTEP 2: Please enter the ANSWER you would like to put on the BACK of the flashcard:\n"
     },
     {
+      type: "list",
       name: "choice",
-      message: "\nYour flashcard has been created!\nPress 1 to create a new flashcard\nPress 2 to start going through the card deck\n"
+      message: "\n***FLASHCARD CREATED***\n\nWould you like to CREATE ANOTHER FLASHCARD or BEGIN REVISION?\n",
+      choices: ["CREATE ANOTHER FLASHCARD", "BEGIN REVISION"]
     }
-  ]).then(function(answers) {
-    var basic = new BasicCard(answers.front, answers.back);
+  ]).then(function(response) {
+    var basic = new BasicCard(response.front, response.back);
     basicCards.push(basic);
-    if (answers.choice === "1") {
+    if (response.choice === "CREATE ANOTHER FLASHCARD") {
       basicCard();
-    } else if (answers.choice === "2") {
+    } else if (response.choice === "BEGIN REVISION") {
       startBasic();
     }
   });
@@ -48,22 +52,24 @@ function basicCard() {
 function clozeCard() {
   inquirer.prompt([{
       name: "text",
-      message: "\nYou will now create a new fill-in-the-blank flashcard.\nPlease enter the full text you would like on the flashcard:\n"
+      message: "\n***FILL-IN-THE-BLANK FLASHCARD***\nSTEP 1: Please enter the FULL TEXT you would like on the FRONT of the flashcard:\n"
     },
     {
       name: "cloze",
-      message: "\nThank you. Now enter the part of the above text that goes in the blank:\n"
+      message: "\nSTEP 2: Please enter the part of the above text that goes in the BLANK on the back of the flashcard:\n"
     },
     {
+      type: "list",
       name: "choice",
-      message: "\nYour flashcard has been created\nPress 1 to create a new flashcard\nPress 2 to start going through the card deck\n"
+      message: "\n***FLASHCARD CREATED***\n\nWould you like to CREATE ANOTHER FLASHCARD or BEGIN REVISION?\n",
+      choices: ["CREATE ANOTHER FLASHCARD", "BEGIN REVISION"]
     }
-  ]).then(function(answers) {
-    var cloze = new ClozeCard(answers.text, answers.cloze);
+  ]).then(function(response) {
+    var cloze = new ClozeCard(response.text, response.cloze);
     clozeCards.push(cloze);
-    if (answers.choice === "1") {
+    if (response.choice === "CREATE ANOTHER FLASHCARD") {
       clozeCard();
-    } else if (answers.choice === "2") {
+    } else if (response.choice === "BEGIN REVISION") {
       startCloze();
     }
   });
@@ -78,15 +84,15 @@ var startBasic = function() {
 
 var flipBasic = function() {
   if (counter < numberOfBasicCards) {
-    console.log(basicCards[counter].front);
+    console.log("\n--------------------------\n\nQUESTION: " + basicCards[counter].front);
     inquirer.prompt([{
-      type: "list",
+      type: "rawlist",
       name: "getAnswer",
-      message: "Would you like to flip the flashcard over?",
-      choices: ["yes", "no"]
-    }]).then(function(answers) {
-      if (answers.getAnswer === "yes") {
-        console.log(basicCards[counter].back);
+      message: "\n(Select FLIP CARD to flip the flashcard over)",
+      choices: ["FLIP CARD"]
+    }]).then(function(response) {
+      if (response.getAnswer === "FLIP CARD") {
+        console.log("\nANSWER: " + basicCards[counter].back + "\n\n--------------------------");
         counter++;
         flipBasic();
       }
@@ -103,15 +109,15 @@ var startCloze = function() {
 
 var flipCloze = function() {
   if (counter < numberOfClozeCards) {
-    console.log(clozeCards[counter].partial);
+    console.log("\n--------------------------\n\nQUESTION: " + clozeCards[counter].partial);
     inquirer.prompt([{
-      type: "list",
+      type: "rawlist",
       name: "getAnswer",
-      message: "Would you like to flip the flashcard over?",
-      choices: ["yes", "no"]
-    }]).then(function(answers) {
-      if (answers.getAnswer === "yes") {
-        console.log(clozeCards[counter].cloze);
+      message: "\n(Select FLIP CARD to flip the flashcard over)",
+      choices: ["FLIP CARD"]
+    }]).then(function(response) {
+      if (response.getAnswer === "FLIP CARD") {
+        console.log("\nANSWER: " + clozeCards[counter].cloze + "\n\n--------------------------");
         counter++;
         flipCloze();
       }
@@ -119,5 +125,5 @@ var flipCloze = function() {
   }
 };
 
-// Begin prompt
+// Begin program
 newCard();
