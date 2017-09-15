@@ -6,7 +6,7 @@ var basicCards = [];
 var clozeCards = [];
 
 // New flashcard creation
-function newCard() {
+var newCard = function() {
   inquirer.prompt([{
     type: "list",
     name: "chooseCard",
@@ -22,7 +22,7 @@ function newCard() {
 };
 
 // Basic flashcard creation
-function basicCard() {
+var basicCard = function() {
   inquirer.prompt([{
       name: "front",
       message: "\n***NEW BASIC FLASHCARD***\nSTEP 1: Please enter a QUESTION you would like to put on the FRONT of the flashcard:\n"
@@ -49,7 +49,7 @@ function basicCard() {
 };
 
 // Cloze-deleted flashcard creation
-function clozeCard() {
+var clozeCard = function() {
   inquirer.prompt([{
       name: "text",
       message: "\n***FILL-IN-THE-BLANK FLASHCARD***\nSTEP 1: Please enter the FULL TEXT you would like on the FRONT of the flashcard:\n"
